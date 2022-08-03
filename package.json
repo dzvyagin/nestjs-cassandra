@@ -2,10 +2,7 @@
   "name": "nestjs-cassandra",
   "version": "1.0.0",
   "description": "NestJS Cassandra Module",
-  "author": {
-    "name": "Danila Zvyagin",
-    "email": "zviagin.danila@gmail.com"
-  },
+  "author": "Danila Zvyagin <zviagin.danila@gmail.com>",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
