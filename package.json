@@ -16,7 +16,9 @@
     "format": "prettier --write \"(src|test)/**/*.(ts|js)\"",
     "debug": "node -r ts-node/register --inspect src/index.ts",
     "clean": "rm -rf ./dist && rm -rf ./docs && npm run doc && npm run test",
-    "test": "jest && make-coverage-badge --report-path docs/coverage/coverage-summary.json --output-path coverage-badge.svg"
+    "test": "jest && make-coverage-badge --report-path docs/coverage/coverage-summary.json --output-path coverage-badge.svg",
+    "publish:npm": "npm publish --access=public ./",
+    "patch:npm": "npm version patch"
   },
   "repository": {
     "type": "git",
