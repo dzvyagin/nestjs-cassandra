@@ -1,16 +1,8 @@
 import { AFTER_SAVE } from '../../orm.constant';
-import {
-  getOptions,
-  addOptions,
-  addHookFunction,
-} from '../../utils/decorator.utils';
+import { getOptions, addOptions, addHookFunction } from '../../utils/decorator.utils';
 
 export function AfterSave(): MethodDecorator {
-  return (
-    target: object,
-    propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<any>,
-  ) => {
+  return (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
     const hookFuncLikeArray = Reflect.getMetadata(AFTER_SAVE, target) || [];
     hookFuncLikeArray.push(descriptor.value);
     Reflect.defineMetadata(AFTER_SAVE, hookFuncLikeArray, target);

@@ -1,16 +1,8 @@
 import { BEFORE_SAVE } from '../../orm.constant';
-import {
-  addOptions,
-  addHookFunction,
-  getOptions,
-} from '../../utils/decorator.utils';
+import { addOptions, addHookFunction, getOptions } from '../../utils/decorator.utils';
 
 export function BeforeSave(): MethodDecorator {
-  return (
-    target: object,
-    propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<any>,
-  ) => {
+  return (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
     const hookFuncLikeArray = Reflect.getMetadata(BEFORE_SAVE, target) || [];
     hookFuncLikeArray.push(descriptor.value);
     Reflect.defineMetadata(BEFORE_SAVE, hookFuncLikeArray, target);

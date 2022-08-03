@@ -1,16 +1,8 @@
 import { BEFORE_DELETE } from '../../orm.constant';
-import {
-  getOptions,
-  addOptions,
-  addHookFunction,
-} from '../../utils/decorator.utils';
+import { getOptions, addOptions, addHookFunction } from '../../utils/decorator.utils';
 
 export function BeforeDelete(): MethodDecorator {
-  return (
-    target: object,
-    propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<any>,
-  ) => {
+  return (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
     const hookFuncLikeArray = Reflect.getMetadata(BEFORE_DELETE, target) || [];
     hookFuncLikeArray.push(descriptor.value);
     Reflect.defineMetadata(BEFORE_DELETE, hookFuncLikeArray, target);

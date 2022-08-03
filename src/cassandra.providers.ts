@@ -1,24 +1,11 @@
-import {
-  getModelToken,
-  getConnectionToken,
-  getRepositoryToken,
-} from './utils/cassandra-orm.utils';
+import { getModelToken, getConnectionToken, getRepositoryToken } from './utils/cassandra-orm.utils';
 import { defer } from 'rxjs';
-import {
-  loadModel,
-  Repository,
-  ConnectionOptions,
-  Connection,
-  BaseModel,
-} from './orm';
+import { loadModel, Repository, ConnectionOptions, Connection, BaseModel } from './orm';
 import { getEntity } from './orm/utils/decorator.utils';
 import { Provider } from '@nestjs/common';
 import { RepositoryFactory } from './orm/repositories/repository.factory';
 
-export function createCassandraProviders(
-  entities?: any[],
-  connection?: Connection | ConnectionOptions | string,
-) {
+export function createCassandraProviders(entities?: any[], connection?: Connection | ConnectionOptions | string) {
   const providerModel = (entity: any) => ({
     provide: getModelToken(entity),
     useFactory: async (connectionLike: Connection) => {
@@ -29,8 +16,7 @@ export function createCassandraProviders(
 
   const provideRepository = (entity: any) => ({
     provide: getRepositoryToken(entity),
-    useFactory: async (model: BaseModel) =>
-      RepositoryFactory.create(entity, model),
+    useFactory: async (model: BaseModel) => RepositoryFactory.create(entity, model),
     inject: [getModelToken(entity)],
   });
 
@@ -38,8 +24,7 @@ export function createCassandraProviders(
     const entity = getEntity(EntityRepository);
     return {
       provide: getRepositoryToken(EntityRepository),
-      useFactory: async (model: BaseModel) =>
-        RepositoryFactory.create(entity, model, EntityRepository),
+      useFactory: async (model: BaseModel) => RepositoryFactory.create(entity, model, EntityRepository),
       inject: [getModelToken(entity)],
     };
   };

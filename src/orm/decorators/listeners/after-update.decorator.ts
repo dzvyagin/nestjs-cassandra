@@ -1,16 +1,8 @@
 import { AFTER_UPDATE } from '../../orm.constant';
-import {
-  addOptions,
-  addHookFunction,
-  getOptions,
-} from '../../utils/decorator.utils';
+import { addOptions, addHookFunction, getOptions } from '../../utils/decorator.utils';
 
 export function AfterUpdate(): MethodDecorator {
-  return (
-    target: object,
-    propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<any>,
-  ) => {
+  return (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
     const hookFuncLikeArray = Reflect.getMetadata(AFTER_UPDATE, target) || [];
     hookFuncLikeArray.push(descriptor.value);
     Reflect.defineMetadata(AFTER_UPDATE, hookFuncLikeArray, target);

@@ -1,27 +1,8 @@
-import {
-  DynamicModule,
-  Module,
-  Global,
-  Provider,
-  OnModuleDestroy,
-  Inject,
-  Logger,
-} from '@nestjs/common';
+import { DynamicModule, Module, Global, Provider, OnModuleDestroy, Inject, Logger } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import {
-  CassandraModuleOptions,
-  CassandraModuleAsyncOptions,
-  CassandraOptionsFactory,
-} from './interfaces';
-import {
-  CASSANDRA_MODULE_OPTIONS,
-  CASSANDRA_MODULE_ID,
-} from './cassandra.constant';
-import {
-  getConnectionToken,
-  handleRetry,
-  generateString,
-} from './utils/cassandra-orm.utils';
+import { CassandraModuleOptions, CassandraModuleAsyncOptions, CassandraOptionsFactory } from './interfaces';
+import { CASSANDRA_MODULE_OPTIONS, CASSANDRA_MODULE_ID } from './cassandra.constant';
+import { getConnectionToken, handleRetry, generateString } from './utils/cassandra-orm.utils';
 import { defer, lastValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConnectionOptions, Connection } from './orm';
@@ -53,7 +34,7 @@ export class CassandraCoreModule implements OnModuleDestroy {
 
   static forRootAsync(options: CassandraModuleAsyncOptions): DynamicModule {
     const connectionProvider = {
-      provide: getConnectionToken(options as ConnectionOptions),
+      provide: getConnectionToken(options),
       useFactory: async (typeormOptions: CassandraModuleOptions) => {
         if (options.name) {
           return await this.createConnectionFactory({
@@ -87,16 +68,12 @@ export class CassandraCoreModule implements OnModuleDestroy {
       return;
     }
     Logger.log('Closing connection', 'CassandraModule');
-    const connection = this.moduleRef.get<Connection>(
-      getConnectionToken(this.options as ConnectionOptions) as any,
-    );
+    const connection = this.moduleRef.get<Connection>(getConnectionToken(this.options as ConnectionOptions) as any);
     // tslint:disable-next-line:no-unused-expression
     connection && (await connection.closeAsync());
   }
 
-  private static createAsyncProviders(
-    options: CassandraModuleAsyncOptions,
-  ): Provider[] {
+  private static createAsyncProviders(options: CassandraModuleAsyncOptions): Provider[] {
     if (options.useExisting || options.useFactory) {
       return [this.createAsyncOptionsProvider(options)];
     }
@@ -113,9 +90,7 @@ export class CassandraCoreModule implements OnModuleDestroy {
     return providers;
   }
 
-  private static createAsyncOptionsProvider(
-    options: CassandraModuleAsyncOptions,
-  ): Provider {
+  private static createAsyncOptionsProvider(options: CassandraModuleAsyncOptions): Provider {
     if (options.useFactory) {
       return {
         provide: CASSANDRA_MODULE_OPTIONS,
@@ -132,14 +107,11 @@ export class CassandraCoreModule implements OnModuleDestroy {
     return {
       inject,
       provide: CASSANDRA_MODULE_OPTIONS,
-      useFactory: async (optionsFactory: CassandraOptionsFactory) =>
-        await optionsFactory.createCassandraOptions(),
+      useFactory: async (optionsFactory: CassandraOptionsFactory) => await optionsFactory.createCassandraOptions(),
     };
   }
 
-  private static async createConnectionFactory(
-    options: CassandraModuleOptions,
-  ): Promise<Connection> {
+  private static async createConnectionFactory(options: CassandraModuleOptions): Promise<Connection> {
     const { retryAttempts, retryDelay, ...cassandraOptions } = options;
     const connection = new Connection(cassandraOptions);
 

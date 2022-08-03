@@ -1197,7 +1197,7 @@
   "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001367.tgz"
   "version" "1.0.30001367"
 
-"cassandra-driver@^4.6.2", "cassandra-driver@^4.6.4":
+"cassandra-driver@^4.6.2", "cassandra-driver@4.6.4":
   "integrity" "sha512-SksbIK0cZ2QZRx8ti7w+PnLqldyY+6kU2gRWFChwXFTtrD/ce8cQICDEHxyPwx+DeILwRnMrPf9cjUGizYw9Vg=="
   "resolved" "https://registry.npmjs.org/cassandra-driver/-/cassandra-driver-4.6.4.tgz"
   "version" "4.6.4"
@@ -1716,7 +1716,7 @@
     "jest-message-util" "^28.1.3"
     "jest-util" "^28.1.3"
 
-"express-cassandra@^2.8.0":
+"express-cassandra@2.8.0":
   "integrity" "sha512-eNEE4nUKJ8IdqKqJfbJzXw+8PVwoR2KUA0+bL7/OTiu9LV4BSfnOT8LMsxLBhCfP898ZRudqDTZOfBk1twP4Ug=="
   "resolved" "https://registry.npmjs.org/express-cassandra/-/express-cassandra-2.8.0.tgz"
   "version" "2.8.0"

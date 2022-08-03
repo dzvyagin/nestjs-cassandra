@@ -25,12 +25,7 @@ export type CassandraType =
   | 'frozen'
   | 'blob';
 
-export type WithWidthColumnType =
-  | 'int'
-  | 'smallint'
-  | 'bigint'
-  | 'tinyint'
-  | 'varint';
+export type WithWidthColumnType = 'int' | 'smallint' | 'bigint' | 'tinyint' | 'varint';
 
 export type ModelColumnType =
   | 'bigint'

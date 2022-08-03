@@ -13,11 +13,7 @@ export class ReturnQueryBuilder<T = any> {
     return new this.model(model).save({ ...options, return_query: true });
   }
 
-  update(
-    query: FindQuery<T> = {},
-    updateValue: Partial<T>,
-    options: UpdateOptionsStatic<T> = {},
-  ): string {
+  update(query: FindQuery<T> = {}, updateValue: Partial<T>, options: UpdateOptionsStatic<T> = {}): string {
     return this.model.update(query, updateValue, {
       ...options,
       return_query: true,

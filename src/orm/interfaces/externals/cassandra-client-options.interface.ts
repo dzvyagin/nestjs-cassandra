@@ -3,9 +3,7 @@ import { ClientOptions } from 'cassandra-driver';
 export type ConnectionOptions = { name?: string } & ClientOptionsStatic;
 
 export interface ClientOptionsStatic {
-  clientOptions: ClientOptions &
-    Partial<ElasticSearchClientOptionsStatic> &
-    Partial<GreminServerClientOptionsStatic>;
+  clientOptions: ClientOptions & Partial<ElasticSearchClientOptionsStatic> & Partial<GreminServerClientOptionsStatic>;
 
   ormOptions: Partial<OrmOptionsStatic>;
 }

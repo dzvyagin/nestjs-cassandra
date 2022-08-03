@@ -35,15 +35,9 @@ export class Repository<Entity = any> {
     return transformEntity(this.target, entityLike);
   }
 
-  findOne(
-    query: FindQuery<Entity>,
-    options?: FindQueryOptionsStatic<Entity>,
-  ): Observable<Entity>;
+  findOne(query: FindQuery<Entity>, options?: FindQueryOptionsStatic<Entity>): Observable<Entity>;
 
-  findOne(
-    query: FindQuery<Entity>,
-    options: FindQueryOptionsStatic<Entity> = {},
-  ): Observable<Entity> {
+  findOne(query: FindQuery<Entity>, options: FindQueryOptionsStatic<Entity> = {}): Observable<Entity> {
     return defer(() =>
       this.model.findOneAsync(query, {
         ...options,
@@ -52,15 +46,9 @@ export class Repository<Entity = any> {
     ).pipe(map((x) => x && transformEntity(this.target, x)));
   }
 
-  findOneOrFail(
-    query: FindQuery<Entity>,
-    options?: FindQueryOptionsStatic<Entity>,
-  ): Observable<Entity>;
+  findOneOrFail(query: FindQuery<Entity>, options?: FindQueryOptionsStatic<Entity>): Observable<Entity>;
 
-  findOneOrFail(
-    query: FindQuery<Entity>,
-    maybeOptions: FindQueryOptionsStatic<Entity> = {},
-  ): Observable<Entity> {
+  findOneOrFail(query: FindQuery<Entity>, maybeOptions: FindQueryOptionsStatic<Entity> = {}): Observable<Entity> {
     return this.findOne(query, maybeOptions).pipe(
       map((entity) => {
         if (entity === undefined) {
@@ -71,15 +59,9 @@ export class Repository<Entity = any> {
     );
   }
 
-  find(
-    query: FindQuery<Entity>,
-    options?: FindQueryOptionsStatic<Entity>,
-  ): Observable<Entity[]>;
+  find(query: FindQuery<Entity>, options?: FindQueryOptionsStatic<Entity>): Observable<Entity[]>;
 
-  find(
-    query: FindQuery<Entity>,
-    options: FindQueryOptionsStatic<Entity> = {},
-  ): Observable<Entity[]> {
+  find(query: FindQuery<Entity>, options: FindQueryOptionsStatic<Entity> = {}): Observable<Entity[]> {
     return defer(() =>
       this.model.findAsync(query, {
         ...options,
@@ -88,10 +70,7 @@ export class Repository<Entity = any> {
     ).pipe(map((x) => transformEntity(this.target, x)));
   }
 
-  findAndCount(
-    query: FindQuery<Entity>,
-    options: FindQueryOptionsStatic<Entity> = {},
-  ): Observable<[Entity[], number]> {
+  findAndCount(query: FindQuery<Entity>, options: FindQueryOptionsStatic<Entity> = {}): Observable<[Entity[], number]> {
     return defer(() =>
       this.model.findAsync(query, {
         ...(options as any),
@@ -103,15 +82,9 @@ export class Repository<Entity = any> {
     );
   }
 
-  save(
-    entity: Partial<Entity>,
-    options?: SaveOptionsStatic,
-  ): Observable<Entity>;
+  save(entity: Partial<Entity>, options?: SaveOptionsStatic): Observable<Entity>;
 
-  save(
-    entities: Partial<Entity>[],
-    options?: SaveOptionsStatic,
-  ): Observable<Entity[]>;
+  save(entities: Partial<Entity>[], options?: SaveOptionsStatic): Observable<Entity[]>;
 
   save(
     entityLike: Partial<Entity> | Partial<Entity>[],
@@ -122,8 +95,7 @@ export class Repository<Entity = any> {
       await model.saveAsync(options);
       return transformEntity(this.target, model.toJSON());
     };
-    const saveMultipleFunc = (arrayLike: Entity[]) =>
-      Promise.all(arrayLike.map((x) => saveFunc(x)));
+    const saveMultipleFunc = (arrayLike: Entity[]) => Promise.all(arrayLike.map((x) => saveFunc(x)));
 
     return Array.isArray(entityLike)
       ? defer(() => saveMultipleFunc(entityLike as any))
@@ -153,29 +125,19 @@ export class Repository<Entity = any> {
 
   remove(entity: Entity[], options?: DeleteOptionsStatic): Observable<Entity[]>;
 
-  remove(
-    entityOrEntities: Entity | Entity[],
-    options: DeleteOptionsStatic = {},
-  ): Observable<Entity | Entity[]> {
+  remove(entityOrEntities: Entity | Entity[], options: DeleteOptionsStatic = {}): Observable<Entity | Entity[]> {
     const removeFunc = (entity: Entity | Partial<unknown> | undefined) =>
       new this.model(entity).deleteAsync({
         ...defaultOptions.deleteOptions,
         ...options,
       });
     const promiseArray =
-      entityOrEntities instanceof Array
-        ? entityOrEntities.map((x) => removeFunc(x))
-        : [removeFunc(entityOrEntities)];
+      entityOrEntities instanceof Array ? entityOrEntities.map((x) => removeFunc(x)) : [removeFunc(entityOrEntities)];
 
-    return defer(() => Promise.all(promiseArray)).pipe(
-      map(() => entityOrEntities),
-    );
+    return defer(() => Promise.all(promiseArray)).pipe(map(() => entityOrEntities));
   }
 
-  delete(
-    query: FindQuery<Entity>,
-    options?: DeleteOptionsStatic,
-  ): Observable<any>;
+  delete(query: FindQuery<Entity>, options?: DeleteOptionsStatic): Observable<any>;
 
   delete(query = {}, options = {}) {
     return defer(() =>
@@ -190,10 +152,7 @@ export class Repository<Entity = any> {
     return defer(() => this.model.truncateAsync());
   }
 
-  stream(
-    query: FindQuery<Entity>,
-    options: FindQueryOptionsStatic<Entity> = {},
-  ): Observable<Entity> {
+  stream(query: FindQuery<Entity>, options: FindQueryOptionsStatic<Entity> = {}): Observable<Entity> {
     const reader$ = new Subject<any>();
 
     const onRead = (reader: { readRow: () => any }): void => {
@@ -214,27 +173,18 @@ export class Repository<Entity = any> {
       return;
     };
 
-    this.model.stream(
-      query,
-      { ...options, ...defaultOptions.findOptions },
-      onRead,
-      onDone,
-    );
+    this.model.stream(query, { ...options, ...defaultOptions.findOptions }, onRead, onDone);
 
     return reader$.asObservable();
   }
 
-  eachRow(
-    query: FindQuery<Entity>,
-    options: FindQueryOptionsStatic<Entity> = {},
-  ): EachRowArgument {
+  eachRow(query: FindQuery<Entity>, options: FindQueryOptionsStatic<Entity> = {}): EachRowArgument {
     const reader$ = new Subject<any>();
     const done$ = new Subject<any>();
     const getReader = () => reader$.asObservable();
     const getDone = () => done$.asObservable();
 
-    const onRow = (_n: any, row: any): void =>
-      reader$.next(transformEntity(this.target, row));
+    const onRow = (_n: any, row: any): void => reader$.next(transformEntity(this.target, row));
     const onDone = (err: Error, result: any): void => {
       if (err) {
         reader$.error(err);
@@ -246,12 +196,7 @@ export class Repository<Entity = any> {
       done$.complete();
     };
 
-    this.model.eachRow(
-      query,
-      { ...options, ...defaultOptions.findOptions },
-      onRow,
-      onDone,
-    );
+    this.model.eachRow(query, { ...options, ...defaultOptions.findOptions }, onRow, onDone);
 
     return { getReader, getDone };
   }

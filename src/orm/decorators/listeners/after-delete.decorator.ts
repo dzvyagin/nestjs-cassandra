@@ -1,16 +1,8 @@
 import { AFTER_DELETE } from '../../orm.constant';
-import {
-  addOptions,
-  addHookFunction,
-  getOptions,
-} from '../../utils/decorator.utils';
+import { addOptions, addHookFunction, getOptions } from '../../utils/decorator.utils';
 
 export function AfterDelete(): MethodDecorator {
-  return (
-    target: object,
-    propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<any>,
-  ) => {
+  return (target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>) => {
     const hookFuncLikeArray = Reflect.getMetadata(AFTER_DELETE, target) || [];
     hookFuncLikeArray.push(descriptor.value);
     Reflect.defineMetadata(AFTER_DELETE, hookFuncLikeArray, target);

@@ -12,8 +12,7 @@ export const uuid = (id?: any): types.Uuid => {
   return id;
 };
 
-export const isTimeUuid = (id: any): boolean =>
-  id && id instanceof types.TimeUuid;
+export const isTimeUuid = (id: any): boolean => id && id instanceof types.TimeUuid;
 
 export const timeuuid = (idOrDate?: string | Date): types.TimeUuid => {
   if (!idOrDate) {

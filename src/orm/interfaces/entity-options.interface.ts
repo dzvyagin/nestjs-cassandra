@@ -23,9 +23,7 @@ export interface EntityOptions<T = object> {
     properties?: EsIndexPropertiesOptionsStatic<T>;
   };
 
-  graph_mapping?: Partial<
-    GraphMappingOptionsStatic<T | { [index: string]: any }>
-  >;
+  graph_mapping?: Partial<GraphMappingOptionsStatic<T | { [index: string]: any }>>;
 
   [index: string]: any;
 }

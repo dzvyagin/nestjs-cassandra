@@ -3,19 +3,14 @@ import { delay, retryWhen, scan } from 'rxjs/operators';
 import { Logger, Type } from '@nestjs/common';
 import { ConnectionOptions, Connection, Repository } from '../orm';
 
-export function handleRetry(
-  retryAttempts = 6,
-  retryDelay = 3000,
-): <T>(source: Observable<T>) => Observable<T> {
+export function handleRetry(retryAttempts = 6, retryDelay = 3000): <T>(source: Observable<T>) => Observable<T> {
   return <T>(source: Observable<T>) =>
     source.pipe(
       retryWhen((e) =>
         e.pipe(
           scan((errorCount: number, error: Error) => {
             Logger.error(
-              `Unable to connect to the database. Retrying (${
-                errorCount + 1
-              })...`,
+              `Unable to connect to the database. Retrying (${errorCount + 1})...`,
               error.stack,
               'CassandraModule',
             );
@@ -38,14 +33,16 @@ export function handleRetry(
  */
 export function getConnectionToken(
   connection: Connection | ConnectionOptions | string = 'default',
-): string | Function | Type<Connection> {
-  return 'default' === connection
-    ? Connection
-    : 'string' === typeof connection
-    ? `${connection}Connection`
-    : 'default' === connection.name || !connection.name
-    ? Connection
-    : `${connection.name}Connection`;
+): string | Type<Connection> {
+  if (connection === 'default') {
+    return Connection;
+  } else if (typeof connection === 'string') {
+    return `${connection}Connection`;
+  } else if ('default' === connection.name || !connection.name) {
+    return Connection;
+  } else {
+    return `${connection.name}Connection`;
+  }
 }
 
 /**

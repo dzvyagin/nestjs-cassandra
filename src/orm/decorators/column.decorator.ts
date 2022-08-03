@@ -9,9 +9,7 @@ export function Column(options: ColumnOptions): PropertyDecorator {
   };
 }
 
-export function GeneratedUUidColumn(
-  type: 'uuid' | 'timeuuid' = 'uuid',
-): PropertyDecorator {
+export function GeneratedUUidColumn(type: 'uuid' | 'timeuuid' = 'uuid'): PropertyDecorator {
   return (target: object, propertyName: string | symbol) => {
     const fn: PropertyDescriptor = {
       value: (...args: any[]) => {
@@ -57,9 +55,7 @@ export function IndexColumn(): PropertyDecorator {
     let { indexes } = getOptions(target);
     indexes = indexes || [];
 
-    const isAdded = (indexes as string[]).some(
-      (value) => value === propertyName,
-    );
+    const isAdded = (indexes as string[]).some((value) => value === propertyName);
     if (isAdded) {
       return;
     }
