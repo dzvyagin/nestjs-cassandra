@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "declaration": true,
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "types": ["node", "jest"],
+    "removeComments": false,
+    "outDir": "./dist",
+    "strict": true
+  },
+  "include": ["src/**/*"],
+  "paths": {
+    "@src/*": ["src/*"]
+  }
+}
