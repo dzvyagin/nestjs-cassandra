@@ -1,11 +1,11 @@
-
 Express Cassandra utilities module for [NestJS](https://github.com/nestjs/nest) based on the [cassandra](https://github.com/masumsoft/cassandra) package.
 
 ## Installation
 
 ```bash
-$ npm i --save cassandra-nestjs
+$ npm i --save nestjs-cassandra
 ```
+
 ## Usage
 
 Import `CassandraModule`:
@@ -39,7 +39,7 @@ CassandraModule.forRootAsync({
   imports: [ConfigModule],
   useFactory: (configService: ConfigService) => configService.getDbConfig(),
   inject: [ConfigService],
-})
+});
 ```
 
 **2. Use class**
@@ -47,7 +47,7 @@ CassandraModule.forRootAsync({
 ```typescript
 CassandraModule.forRootAsync({
   useClass: ConfigService,
-})
+});
 ```
 
 Above construction will instantiate `ConfigService` inside `CassandraModule` and will leverage it to create options object.
@@ -65,8 +65,8 @@ class ConfigService implements CassandraOptionsFactory {
 ```typescript
 CassandraModule.forRootAsync({
   imports: [ConfigModule],
-  useExisting: ConfigService
-})
+  useExisting: ConfigService,
+});
 ```
 
 It works the same as `useClass` with one critical difference - `CassandraModule` will lookup imported modules to reuse already created ConfigService, instead of instantiating it on its own.
@@ -74,7 +74,7 @@ It works the same as `useClass` with one critical difference - `CassandraModule`
 ## ORM Options
 
 ```typescript
-import { Entity, Column } from '@iaminfinity/cassandra';
+import { Entity, Column } from 'nestjs-cassandra';
 
 @Entity({
   table_name: 'photo',
@@ -98,7 +98,7 @@ Let's have a look at the `PhotoModule`
 
 ```typescript
 import { Module } from '@nestjs/common';
-import { CassandraModule } from '@iaminfinity/cassandra';
+import { CassandraModule } from 'nestjs-cassandra';
 import { PhotoService } from './photo.service';
 import { PhotoController } from './photo.controller';
 import { PhotoEntity } from './photo.entity';
@@ -115,14 +115,14 @@ This module uses `forFeature()` method to define which entities shall be registe
 
 ```typescript
 import { Injectable } from '@nestjs/common';
-import { InjectModel, BaseModel } from '@iaminfinity/cassandra';
+import { InjectModel, BaseModel } from 'nestjs-cassandra';
 import { PhotoEntity } from './photo.entity';
 
 @Injectable()
 export class PersonService {
   constructor(
     @InjectModel(PhotoEntity)
-    private readonly photoEntity: BaseModel<PhotoEntity>
+    private readonly photoEntity: BaseModel<PhotoEntity>,
   ) {}
 
   getByName(name: string): Promise<PhotoEntity> {
@@ -132,11 +132,11 @@ export class PersonService {
 ```
 
 **Using Column Decorators:**
-To auto-generate uuid/timeuuid column, you need to decorate an entity's properties you want to make into a auto-generated 
+To auto-generate uuid/timeuuid column, you need to decorate an entity's properties you want to make into a auto-generated
 uuid/timeuuid column with a `@GeneratedUUidColumn` decorator.
 
 ```typescript
-import { Entity, Column, GeneratedUUidColumn } from '@iaminfinity/cassandra';
+import { Entity, Column, GeneratedUUidColumn } from 'nestjs-cassandra';
 
 @Entity({
   table_name: 'photo',
@@ -155,16 +155,17 @@ export class PhotoEntity {
   name: string;
 }
 ```
-To auto-generate createdDate/updatedDate column, you need to decorate an entity's properties you want to make into a auto-generated 
+
+To auto-generate createdDate/updatedDate column, you need to decorate an entity's properties you want to make into a auto-generated
 createdDate/updatedDate column with a `@CreateDateColumn` or `@UpdateDateColumn` decorator.
 
 To index a column, you need to decorate an entity's properties you want to index with a `@IndexColumn` decorator.
 
-To auto-generate version column, you need to decorate an entity's properties you want to make into a auto-generated 
+To auto-generate version column, you need to decorate an entity's properties you want to make into a auto-generated
 version column with a `@VersionColumn` decorator.
 
 ```typescript
-import { 
+import {
   Entity,
   Column,
   GeneratedUUidColumn,
@@ -172,7 +173,7 @@ import {
   UpdateDateColumn,
   IndexColumn,
   VersionColumn,
-} from '@iaminfinity/cassandra';
+} from 'nestjs-cassandra';
 
 @Entity({
   table_name: 'photo',
@@ -208,7 +209,7 @@ An entity of cassandra support multiple hook function. For more details [see](ht
 To create hook function in an entity use `@BeforeSave`, `@AfterSave`, `@BeforeUpdate`, `@AfterUpdate`, `@BeforeDelete`, `@AfterDelete` decorators.
 
 ```typescript
-import { 
+import {
   Entity,
   Column,
   GeneratedUUidColumn,
@@ -218,7 +219,7 @@ import {
   AfterUpdate,
   BeforeDelete,
   AfterDelete,
-} from '@iaminfinity/cassandra';
+} from 'nestjs-cassandra';
 
 @Entity({
   table_name: 'photo',
@@ -255,7 +256,7 @@ export class PhotoEntity {
 
 ```typescript
 import { Module } from '@nestjs/common';
-import { CassandraModule } from '@iaminfinity/cassandra';
+import { CassandraModule } from 'nestjs-cassandra';
 import { PhotoService } from './photo.service';
 import { PhotoController } from './photo.controller';
 import { PhotoEntity } from './photo.entity';
@@ -270,7 +271,7 @@ export class PhotoModule {}
 
 ```typescript
 import { Injectable } from '@nestjs/common';
-import { InjectRepository, Repository } from '@iaminfinity/cassandra';
+import { InjectRepository, Repository } from 'nestjs-cassandra';
 import { PhotoEntity } from './photo.entity';
 import { Observable } from 'rxjs';
 
@@ -282,7 +283,7 @@ export class PersonService {
   ) {}
 
   getById(id: id): Observable<PhotoEntity> {
-    return this.photoRepository.findOne({id});
+    return this.photoRepository.findOne({ id });
   }
 }
 ```
@@ -292,7 +293,7 @@ export class PersonService {
 Let's create a repository:
 
 ```typescript
-import { Repository, EntityRepository } from '@iaminfinity/cassandra';
+import { Repository, EntityRepository } from 'nestjs-cassandra';
 import { PhotoEntity } from './photo.entity';
 import { Observable } from 'rxjs';
 
@@ -308,7 +309,7 @@ Let's have a look at the `PhotoModule`:
 
 ```typescript
 import { Module } from '@nestjs/common';
-import { CassandraModule } from '@iaminfinity/cassandra';
+import { CassandraModule } from 'nestjs-cassandra';
 import { PhotoService } from './photo.service';
 import { PhotoController } from './photo.controller';
 import { PhotoEntity } from './photo.entity';
@@ -326,7 +327,7 @@ Now let's use `PhotoRepository` in `PhotoService`:
 
 ```typescript
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@iaminfinity/cassandra';
+import { InjectRepository } from 'nestjs-cassandra';
 import { PhotoEntity } from './photo.entity';
 import { PhotoRepository } from './photo.repository';
 import { Observable } from 'rxjs';
@@ -348,7 +349,7 @@ Injecting connection:
 
 ```typescript
 import { Injectable } from '@nestjs/common';
-import { InjectRepository, InjectConnection } from '@iaminfinity/cassandra';
+import { InjectRepository, InjectConnection } from 'nestjs-cassandra';
 import { PhotoEntity } from './photo.entity';
 import { PhotoRepository } from './photo.repository';
 import { Observable } from 'rxjs';
@@ -369,6 +370,7 @@ export class PersonService {
 ```
 
 ## Using Elassandra
+
 Express cassandra support `Elassandra`. For more details [see](https://cassandra.readthedocs.io/en/stable/elassandra/).
 
 ```typescript
@@ -391,7 +393,7 @@ export class AppModule {}
 ```
 
 ```typescript
-import { Entity, Column } from '@iaminfinity/cassandra';
+import { Entity, Column } from 'nestjs-cassandra';
 
 @Entity<PhotoEntity>({
   table_name: 'photo',
@@ -399,12 +401,12 @@ import { Entity, Column } from '@iaminfinity/cassandra';
   es_index_mapping: {
     discover: '.*',
     properties: {
-      name : {
-        type : 'string',
-        index : 'analyzed',
+      name: {
+        type: 'string',
+        index: 'analyzed',
       },
     },
-  }
+  },
 })
 export class PhotoEntity {
   @Column({
@@ -422,7 +424,7 @@ export class PhotoEntity {
 
 ```typescript
 import { Module } from '@nestjs/common';
-import { CassandraModule } from '@iaminfinity/cassandra';
+import { CassandraModule } from 'nestjs-cassandra';
 import { PhotoService } from './photo.service';
 import { PhotoController } from './photo.controller';
 import { PhotoEntity } from './photo.entity';
@@ -437,14 +439,14 @@ export class PhotoModule {}
 
 ```typescript
 import { Injectable } from '@nestjs/common';
-import { InjectModel, BaseModel } from '@iaminfinity/cassandra';
+import { InjectModel, BaseModel } from 'nestjs-cassandra';
 import { PhotoEntity } from './photo.entity';
 
 @Injectable()
 export class PersonService {
   constructor(
     @InjectModel(PhotoEntity)
-    private readonly photoEntity: BaseModel<PhotoEntity>
+    private readonly photoEntity: BaseModel<PhotoEntity>,
   ) {}
 
   searchName(name: string): Promise<any> {
@@ -463,4 +465,4 @@ export class PersonService {
 
 ## Thanks
 
-- Author - [Fahim Rahman](https://github.com/ifaim)
+- Author - [Danila Zvyagin](https://github.com/dzvyagin)
