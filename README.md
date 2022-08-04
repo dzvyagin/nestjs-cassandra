@@ -6,6 +6,86 @@ Express Cassandra utilities module for [NestJS](https://github.com/nestjs/nest) 
 $ npm i --save nestjs-cassandra
 ```
 
+## Example
+
+In app.module.ts:
+
+```typescript
+imports: [
+  CassandraModule.forRootAsync({
+    imports: [ConfigModule],
+    useFactory: (configService: ConfigService) =>
+      configService.get('database'),
+    inject: [ConfigService],
+  }),
+  CassandraModule.forFeature([ExampleEntity]),
+],
+```
+
+Сonfig is required, now if it is not, there will be an error. This will be fixed in the next version.
+
+In example.module.ts:
+
+```typescript
+imports: [CassandraModule.forFeature([ExampleEntity])],
+```
+
+In example.service.ts:
+
+```typescript
+import { Injectable } from '@nestjs/common';
+import { InjectModel, BaseModel } from 'nestjs-cassandra';
+import { ExampleEntity } from './example.entity';
+
+@Injectable()
+export class ExampleService {
+  constructor(
+    @InjectModel(ExampleEntity)
+    private readonly exampleEntity: BaseModel<ExampleEntity>,
+  ) {}
+
+  getByName(name: string): Promise<ExampleEntity> {
+    return this.exampleEntity.findOneAsync({ name: name }, { raw: true });
+  }
+}
+```
+
+In example.entity.ts:
+
+```typescript
+import { Entity, Column, GeneratedUUidColumn } from 'nestjs-cassandra';
+
+@Entity({
+  table_name: 'example',
+  key: ['id'],
+})
+export class PhotoEntity {
+  @GeneratedUUidColumn()
+  id: any;
+
+  @GeneratedUUidColumn('timeuuid')
+  time_id: any;
+
+  @Column({
+    type: 'text',
+  })
+  name: string;
+}
+```
+
+UUID is a special type of columns of the cassandra, to bring the string to this type, you need to import the function uuid and pass the string into it
+
+```typescript
+import { uuid } from 'nestjs-cassandra';
+
+const cassandraUUid = uuid('37e27292-0d9f-43a5-9d34-fa7c763aca10');
+this.entity.find({ id: cassandraUUid });
+```
+
+Initially many methods give Observable, to lead to Promise use [lastValueFrom](https://rxjs.dev/api/index/function/lastValueFrom) or [toPromise](https://www.learnrxjs.io/learn-rxjs/operators/utility/topromise).
+
+Soon a flag will be added that will allow you to select the type of result (Promise or Observable).
+
 ## Usage
 
 Import `CassandraModule`:
