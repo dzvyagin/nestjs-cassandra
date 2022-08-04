@@ -19,9 +19,7 @@ export function loadModel(connection: any, entity: any): Promise<any> {
 
 export function getSchema(entity: any) {
   const attributes = getAttributes(entity.prototype);
-  const { instanceMethods, classMethods, ...options } = getOptions(
-    entity.prototype,
-  );
+  const { instanceMethods, classMethods, ...options } = getOptions(entity.prototype);
   const model = { ...options };
   model.fields = { ...attributes };
   return model;

@@ -17,6 +17,9 @@ export class CassandraCoreModule implements OnModuleDestroy {
   ) {}
 
   static forRoot(options: CassandraModuleOptions = {}): DynamicModule {
+    if (!options) {
+      Logger.error('connect options is undefined');
+    }
     const expressModuleOptions = {
       provide: CASSANDRA_MODULE_OPTIONS,
       useValue: options,
@@ -33,8 +36,11 @@ export class CassandraCoreModule implements OnModuleDestroy {
   }
 
   static forRootAsync(options: CassandraModuleAsyncOptions): DynamicModule {
+    if (!options) {
+      Logger.error('connect options is undefined');
+    }
     const connectionProvider = {
-      provide: getConnectionToken(options),
+      provide: getConnectionToken(options as ConnectionOptions),
       useFactory: async (typeormOptions: CassandraModuleOptions) => {
         if (options.name) {
           return await this.createConnectionFactory({
