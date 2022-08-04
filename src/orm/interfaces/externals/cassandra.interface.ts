@@ -3,51 +3,25 @@ type Callback = (error: Error, value?: any) => void;
 export interface BaseModel<T = any> {
   new <R>(value?: Partial<T | R>): BaseModelStatic<T> & T;
 
-  findOne(
-    query: FindQuery<T>,
-    options: { return_query: true } & FindQueryOptionsStatic<T>,
-  ): string;
+  findOne(query: FindQuery<T>, options: { return_query: true } & FindQueryOptionsStatic<T>): string;
 
   findOne(query: FindQuery<T>, callback: Callback): void;
 
-  findOne(
-    query: FindQuery<T>,
-    options: FindQueryOptionsStatic<T>,
-    callback: Callback,
-  ): void;
+  findOne(query: FindQuery<T>, options: FindQueryOptionsStatic<T>, callback: Callback): void;
 
-  findOneAsync(
-    query: FindQuery<T>,
-    options: FindQueryOptionsStatic<T> & { raw: true },
-  ): Promise<T>;
+  findOneAsync(query: FindQuery<T>, options: FindQueryOptionsStatic<T> & { raw: true }): Promise<T>;
 
-  findOneAsync(
-    query: FindQuery<T>,
-    options?: FindQueryOptionsStatic<T>,
-  ): Promise<BaseModelStatic<T>>;
+  findOneAsync(query: FindQuery<T>, options?: FindQueryOptionsStatic<T>): Promise<BaseModelStatic<T>>;
 
-  find(
-    query: FindQuery<T>,
-    options?: { return_query: true } & FindQueryOptionsStatic<T>,
-  ): string;
+  find(query: FindQuery<T>, options?: { return_query: true } & FindQueryOptionsStatic<T>): string;
 
   find(query: FindQuery<T>, callback: Callback): void;
 
-  find(
-    query: FindQuery<T>,
-    options: FindQueryOptionsStatic<T>,
-    callback: Callback,
-  ): void;
+  find(query: FindQuery<T>, options: FindQueryOptionsStatic<T>, callback: Callback): void;
 
-  findAsync(
-    query: FindQuery<T>,
-    options: FindQueryOptionsStatic<T> & { raw: true },
-  ): Promise<T[]>;
+  findAsync(query: FindQuery<T>, options: FindQueryOptionsStatic<T> & { raw: true }): Promise<T[]>;
 
-  findAsync(
-    query: FindQuery<T>,
-    options?: FindQueryOptionsStatic<T>,
-  ): Promise<BaseModelStatic<T>[]>;
+  findAsync(query: FindQuery<T>, options?: FindQueryOptionsStatic<T>): Promise<BaseModelStatic<T>[]>;
 
   update(
     query: FindQuery<T>,
@@ -55,42 +29,19 @@ export interface BaseModel<T = any> {
     options: { return_query: true } & UpdateOptionsStatic<T>,
   ): string;
 
-  update(
-    query: FindQuery<T>,
-    updateValue: Partial<T>,
-    callback?: Callback,
-  ): void;
+  update(query: FindQuery<T>, updateValue: Partial<T>, callback?: Callback): void;
 
-  update(
-    query: FindQuery<T>,
-    updateValue: Partial<T>,
-    options: UpdateOptionsStatic<T>,
-    callback?: Callback,
-  ): void;
+  update(query: FindQuery<T>, updateValue: Partial<T>, options: UpdateOptionsStatic<T>, callback?: Callback): void;
 
-  updateAsync(
-    query: FindQuery<T>,
-    updateValue: Partial<T>,
-    options?: UpdateOptionsStatic<T>,
-  ): Promise<T | any>;
+  updateAsync(query: FindQuery<T>, updateValue: Partial<T>, options?: UpdateOptionsStatic<T>): Promise<T | any>;
 
-  delete(
-    query: FindQuery<T>,
-    options: { return_query: true } & DeleteOptionsStatic,
-  ): string;
+  delete(query: FindQuery<T>, options: { return_query: true } & DeleteOptionsStatic): string;
 
   delete(query: FindQuery<T>, callback?: Callback): void;
 
-  delete(
-    query: FindQuery<T>,
-    options?: DeleteOptionsStatic,
-    callback?: Callback,
-  ): void;
+  delete(query: FindQuery<T>, options?: DeleteOptionsStatic, callback?: Callback): void;
 
-  deleteAsync(
-    query: FindQuery<T>,
-    options?: DeleteOptionsStatic,
-  ): Promise<T | any>;
+  deleteAsync(query: FindQuery<T>, options?: DeleteOptionsStatic): Promise<T | any>;
 
   truncateAsync(): Promise<any>;
 
@@ -110,10 +61,7 @@ export interface BaseModel<T = any> {
 
   execute_query(query: string, params: any[], callback?: Callback): void;
 
-  execute_batch(
-    queries: { query: string; params: any[] }[],
-    callback?: (err: Error) => void,
-  ): void;
+  execute_batch(queries: { query: string; params: any[] }[], callback?: (err: Error) => void): void;
 
   close(callback?: (err: Error) => void): void;
 
@@ -121,7 +69,7 @@ export interface BaseModel<T = any> {
 
   get_keyspace_name(): string;
 
-  get_table_name(): string;
+  get_table(): string;
 
   get_cql_client(): any;
 
@@ -133,28 +81,13 @@ export interface BaseModel<T = any> {
 
   getVertex(id: any, callback?: Callback): void;
 
-  updateVertex<R>(
-    id: any,
-    updateEntity: Partial<T | R>,
-    callback?: Callback,
-  ): void;
+  updateVertex<R>(id: any, updateEntity: Partial<T | R>, callback?: Callback): void;
 
   deleteVertex(id: any, callback?: (err: Error) => void): void;
 
-  createEdge(
-    relation: string,
-    followerVertexId: any,
-    followeeVertexId: any,
-    callback?: Callback,
-  ): void;
+  createEdge(relation: string, followerVertexId: any, followeeVertexId: any, callback?: Callback): void;
 
-  createEdge(
-    relation: string,
-    followerVertexId: any,
-    followeeVertexId: any,
-    model: any,
-    callback?: Callback,
-  ): void;
+  createEdge(relation: string, followerVertexId: any, followeeVertexId: any, model: any, callback?: Callback): void;
 
   getEdge(id: any, callback?: Callback): void;
 
@@ -162,11 +95,7 @@ export interface BaseModel<T = any> {
 
   deleteEdge(id: any, callback?: (err: Error) => void): void;
 
-  graphQuery<R>(
-    query: string,
-    entityQuery: Partial<T | R>,
-    callback?: Callback,
-  ): void;
+  graphQuery<R>(query: string, entityQuery: Partial<T | R>, callback?: Callback): void;
 
   get_gremlin_client(): GremlinClientStatic<T>;
 
@@ -297,11 +226,7 @@ export interface EsSearchOptionsStatic {
 }
 
 interface GremlinClientStatic<TEntity = any> {
-  execute<T>(
-    query: string,
-    entityQuery: Partial<TEntity | T>,
-    callback?: Callback,
-  ): void;
+  execute<T>(query: string, entityQuery: Partial<TEntity | T>, callback?: Callback): void;
 
   [index: string]: any;
 }

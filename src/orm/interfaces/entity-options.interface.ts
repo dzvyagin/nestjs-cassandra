@@ -1,7 +1,7 @@
 import { FindSubQueryStatic } from './externals/cassandra.interface';
 
 export interface EntityOptions<T = object> {
-  table_name?: string;
+  table?: string;
 
   key?: Array<keyof T | Array<keyof T>>;
 

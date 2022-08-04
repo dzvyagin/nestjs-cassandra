@@ -105,6 +105,7 @@ export class CassandraCoreModule implements OnModuleDestroy {
       };
     }
 
+    // TODO убрать это
     let inject;
     if (options.useClass || options.useExisting) {
       const inject = [options.useClass || options.useExisting];

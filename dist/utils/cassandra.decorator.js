@@ -7,8 +7,6 @@ var InjectConnection = function (connection) { return (0, common_1.Inject)((0, c
 exports.InjectConnection = InjectConnection;
 var InjectModel = function (entity) { return (0, common_1.Inject)((0, cassandra_orm_utils_1.getModelToken)(entity)); };
 exports.InjectModel = InjectModel;
-var InjectRepository = function (entity) {
-    return (0, common_1.Inject)((0, cassandra_orm_utils_1.getRepositoryToken)(entity));
-};
+var InjectRepository = function (entity) { return (0, common_1.Inject)((0, cassandra_orm_utils_1.getRepositoryToken)(entity)); };
 exports.InjectRepository = InjectRepository;
 //# sourceMappingURL=cassandra.decorator.js.map

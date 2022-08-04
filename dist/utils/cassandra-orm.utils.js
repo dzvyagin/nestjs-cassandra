@@ -37,13 +37,18 @@ exports.handleRetry = handleRetry;
  */
 function getConnectionToken(connection) {
     if (connection === void 0) { connection = 'default'; }
-    return 'default' === connection
-        ? orm_1.Connection
-        : 'string' === typeof connection
-            ? "".concat(connection, "Connection")
-            : 'default' === connection.name || !connection.name
-                ? orm_1.Connection
-                : "".concat(connection.name, "Connection");
+    if (connection === 'default') {
+        return orm_1.Connection;
+    }
+    else if (typeof connection === 'string') {
+        return "".concat(connection, "Connection");
+    }
+    else if ('default' === connection.name || !connection.name) {
+        return orm_1.Connection;
+    }
+    else {
+        return "".concat(connection.name, "Connection");
+    }
 }
 exports.getConnectionToken = getConnectionToken;
 /**

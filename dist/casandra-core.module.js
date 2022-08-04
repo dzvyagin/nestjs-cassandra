@@ -96,6 +96,9 @@ var CassandraCoreModule = /** @class */ (function () {
     CassandraCoreModule.forRoot = function (options) {
         var _this = this;
         if (options === void 0) { options = {}; }
+        if (!options) {
+            common_1.Logger.error('connect options is undefined');
+        }
         var expressModuleOptions = {
             provide: cassandra_constant_1.CASSANDRA_MODULE_OPTIONS,
             useValue: options,
@@ -117,6 +120,9 @@ var CassandraCoreModule = /** @class */ (function () {
     };
     CassandraCoreModule.forRootAsync = function (options) {
         var _this = this;
+        if (!options) {
+            common_1.Logger.error('connect options is undefined');
+        }
         var connectionProvider = {
             provide: (0, cassandra_orm_utils_1.getConnectionToken)(options),
             useFactory: function (typeormOptions) { return __awaiter(_this, void 0, void 0, function () {
@@ -197,6 +203,7 @@ var CassandraCoreModule = /** @class */ (function () {
                 inject: options.inject || [],
             };
         }
+        // TODO убрать это
         var inject;
         if (options.useClass || options.useExisting) {
             var inject_1 = [options.useClass || options.useExisting];

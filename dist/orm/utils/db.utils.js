@@ -14,9 +14,7 @@ var uuid = function (id) {
     return id;
 };
 exports.uuid = uuid;
-var isTimeUuid = function (id) {
-    return id && id instanceof cassandra_driver_1.types.TimeUuid;
-};
+var isTimeUuid = function (id) { return id && id instanceof cassandra_driver_1.types.TimeUuid; };
 exports.isTimeUuid = isTimeUuid;
 var timeuuid = function (idOrDate) {
     if (!idOrDate) {

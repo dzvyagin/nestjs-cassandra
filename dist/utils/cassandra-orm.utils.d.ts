@@ -8,7 +8,7 @@ export declare function handleRetry(retryAttempts?: number, retryDelay?: number)
  * a Connection or a ConnectionOptions or a string.
  * @returns {(string | Function | Type<Connection>)} The Connection injection token.
  */
-export declare function getConnectionToken(connection?: Connection | ConnectionOptions | string): string | Function | Type<Connection>;
+export declare function getConnectionToken(connection?: Connection | ConnectionOptions | string): string | Type<Connection>;
 /**
  * This function returns a Cassandra model token for given entity.
  * @param {Function} entity This parameter is an Entity class.

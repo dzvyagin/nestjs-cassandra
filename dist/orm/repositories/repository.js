@@ -110,9 +110,7 @@ var Repository = /** @class */ (function () {
                 }
             });
         }); };
-        var saveMultipleFunc = function (arrayLike) {
-            return Promise.all(arrayLike.map(function (x) { return saveFunc(x); }));
-        };
+        var saveMultipleFunc = function (arrayLike) { return Promise.all(arrayLike.map(function (x) { return saveFunc(x); })); };
         return Array.isArray(entityLike)
             ? (0, rxjs_1.defer)(function () { return saveMultipleFunc(entityLike); })
             : (0, rxjs_1.defer)(function () { return saveFunc(entityLike); });
@@ -130,9 +128,7 @@ var Repository = /** @class */ (function () {
         var removeFunc = function (entity) {
             return new _this.model(entity).deleteAsync(__assign(__assign({}, defaultOptions.deleteOptions), options));
         };
-        var promiseArray = entityOrEntities instanceof Array
-            ? entityOrEntities.map(function (x) { return removeFunc(x); })
-            : [removeFunc(entityOrEntities)];
+        var promiseArray = entityOrEntities instanceof Array ? entityOrEntities.map(function (x) { return removeFunc(x); }) : [removeFunc(entityOrEntities)];
         return (0, rxjs_1.defer)(function () { return Promise.all(promiseArray); }).pipe((0, operators_1.map)(function () { return entityOrEntities; }));
     };
     Repository.prototype.delete = function (query, options) {
@@ -177,9 +173,7 @@ var Repository = /** @class */ (function () {
         var done$ = new rxjs_1.Subject();
         var getReader = function () { return reader$.asObservable(); };
         var getDone = function () { return done$.asObservable(); };
-        var onRow = function (_n, row) {
-            return reader$.next((0, transform_entity_utils_1.transformEntity)(_this.target, row));
-        };
+        var onRow = function (_n, row) { return reader$.next((0, transform_entity_utils_1.transformEntity)(_this.target, row)); };
         var onDone = function (err, result) {
             if (err) {
                 reader$.error(err);

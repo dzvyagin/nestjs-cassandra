@@ -77,7 +77,7 @@ It works the same as `useClass` with one critical difference - `CassandraModule`
 import { Entity, Column } from 'nestjs-cassandra';
 
 @Entity({
-  table_name: 'photo',
+  table: 'photo',
   key: ['id'],
 })
 export class PhotoEntity {
@@ -139,7 +139,7 @@ uuid/timeuuid column with a `@GeneratedUUidColumn` decorator.
 import { Entity, Column, GeneratedUUidColumn } from 'nestjs-cassandra';
 
 @Entity({
-  table_name: 'photo',
+  table: 'photo',
   key: ['id'],
 })
 export class PhotoEntity {
@@ -176,7 +176,7 @@ import {
 } from 'nestjs-cassandra';
 
 @Entity({
-  table_name: 'photo',
+  table: 'photo',
   key: ['id'],
 })
 export class PhotoEntity {
@@ -222,7 +222,7 @@ import {
 } from 'nestjs-cassandra';
 
 @Entity({
-  table_name: 'photo',
+  table: 'photo',
   key: ['id'],
 })
 export class PhotoEntity {
@@ -396,7 +396,7 @@ export class AppModule {}
 import { Entity, Column } from 'nestjs-cassandra';
 
 @Entity<PhotoEntity>({
-  table_name: 'photo',
+  table: 'photo',
   key: ['id'],
   es_index_mapping: {
     discover: '.*',

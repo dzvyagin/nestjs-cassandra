@@ -3,10 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Entity = void 0;
 var decorator_utils_1 = require("../utils/decorator.utils");
 function Entity(nameOrOptions, maybeOptions) {
-    var options = (typeof nameOrOptions === 'object'
-        ? nameOrOptions
-        : maybeOptions) || {};
-    var name = typeof nameOrOptions === 'string' ? nameOrOptions : options.table_name;
+    // TODO описать тип и переименовать table
+    var options = (typeof nameOrOptions === 'object' ? nameOrOptions : maybeOptions) || {};
+    var name = typeof nameOrOptions === 'string' ? nameOrOptions : options.table;
     return function (target) {
         options.instanceMethods = target.prototype;
         options.classMethods = target;

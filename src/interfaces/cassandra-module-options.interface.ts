@@ -11,22 +11,17 @@ export type CassandraModuleOptions = {
 } & Partial<ConnectionOptions>;
 
 export interface CassandraOptionsFactory {
-  createCassandraOptions():
-    | Promise<CassandraModuleOptions>
-    | CassandraModuleOptions;
+  createCassandraOptions(): Promise<CassandraModuleOptions> | CassandraModuleOptions;
 }
 
-export interface CassandraModuleAsyncOptions
-  extends Pick<ModuleMetadata, 'imports'> {
+export interface CassandraModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
   name?: string;
 
   useExisting?: Type<CassandraOptionsFactory>;
 
   useClass?: Type<CassandraOptionsFactory>;
 
-  useFactory?: (
-    ...args: any[]
-  ) => Promise<CassandraModuleOptions> | CassandraModuleOptions;
+  useFactory?: (...args: any[]) => Promise<CassandraModuleOptions> | CassandraModuleOptions;
 
   inject?: any[];
 }

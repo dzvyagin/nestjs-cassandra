@@ -27,7 +27,7 @@ var decorator_utils_1 = require("./decorator.utils");
 var common_1 = require("@nestjs/common");
 function loadModel(connection, entity) {
     var schema = getSchema(entity);
-    var modelName = entity.name || entity.table_name;
+    var modelName = entity.name || entity.table;
     var model = connection.loadSchema(modelName, schema);
     return new Promise(function (resolve) {
         model.syncDB(function (err) {

@@ -42,7 +42,7 @@ export interface BaseModel<T = any> {
     close(callback?: (err: Error) => void): void;
     syncDB(callback?: (err: Error, result: boolean) => void): any;
     get_keyspace_name(): string;
-    get_table_name(): string;
+    get_table(): string;
     get_cql_client(): any;
     search(options: EsSearchOptionsStatic, callback?: Callback): void;
     get_es_client(): any;
