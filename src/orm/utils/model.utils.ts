@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 
 export function loadModel(connection: any, entity: any): Promise<any> {
   const schema = getSchema(entity);
-  const modelName = entity.name || entity.table;
+  const modelName = entity.name || entity.table_name;
   const model = connection.loadSchema(modelName, schema);
 
   return new Promise((resolve) => {
